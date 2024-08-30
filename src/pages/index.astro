@@ -1,9 +1,19 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import Header from "@components/Header";
+import Hero from "@components/Hero";
+import Conversions from "@components/Conversions";
+import Footer from "@components/Footer";
 ---
 
-<Layout title="Numerical systems" description="Numerical systems">
+<Layout
+  title="Sistemas numéricos | @armandodev"
+  description="Conversores de sistemas numéricos binarios, octales, decimales y hexadecimales"
+>
+  <Header />
   <main>
-    <h1>Numerical systems</h1>
+    <Hero />
+    <Conversions />
   </main>
+  <Footer />
 </Layout>
