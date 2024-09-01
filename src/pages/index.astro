@@ -1,9 +1,8 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import Header from "@components/Header";
-import Hero from "@components/Hero";
-import Conversions from "@components/Conversions";
 import Footer from "@components/Footer";
+import Converter from "@components/Converter";
 ---
 
 <Layout
@@ -11,9 +10,6 @@ import Footer from "@components/Footer";
   description="Conversores de sistemas numéricos binarios, octales, decimales y hexadecimales"
 >
   <Header />
-  <main>
-    <Hero />
-    <Conversions />
-  </main>
+  <Converter client:load />
   <Footer />
 </Layout>
