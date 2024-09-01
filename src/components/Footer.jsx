@@ -9,7 +9,7 @@ export default function Footer() {
           Sitio creado por{" "}
           <a
             href="https://armandodev-portfolio.vercel.app/"
-            className="text-blue-600 dark:text-blue-400"
+            className="text-blue-600 dark:text-blue-400 underline"
             target="_blank"
           >
             @armandodev
