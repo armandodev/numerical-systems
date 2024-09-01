@@ -23,6 +23,7 @@ export default function Footer() {
               href="https://github.com/armandodev/numerical-systems"
               target="_blank"
             >
+              <span className="sr-only">Github</span>
               <Github className="stroke-gray-600 dark:stroke-gray-400" />
             </a>
           </li>
@@ -32,6 +33,7 @@ export default function Footer() {
               href="https://armandodev-portfolio.vercel.app/"
               target="_blank"
             >
+              <span className="sr-only">Portfolio</span>
               <Portfolio className="stroke-gray-600 dark:stroke-gray-400" />
             </a>
           </li>
