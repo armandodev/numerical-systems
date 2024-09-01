@@ -12,6 +12,7 @@ export default function Header() {
         <span className="hidden sm:inline-block text-xl font-bold">
           Sistemas numéricos
         </span>
+        <span className="sr-only">Sistemas numéricos</span>
       </a>
     </header>
   );
