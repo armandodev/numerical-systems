@@ -3,8 +3,8 @@ import Portfolio from "@icons/Portfolio";
 
 export default function Footer() {
   return (
-    <footer className="bg-gray-100 dark:bg-gray-800 py-8">
-      <div className="container mx-auto px-4 flex flex-wrap items-center justify-between gap-4">
+    <footer className="py-8">
+      <div className="max-w-screen-sm mx-auto px-4 flex flex-wrap items-center justify-between gap-4">
         <p className="text-gray-600 dark:text-gray-400">
           Sitio creado por{" "}
           <a
@@ -23,7 +23,7 @@ export default function Footer() {
               href="https://github.com/armandodev/numerical-systems"
               target="_blank"
             >
-              <Github className="stroke-black dark:stroke-gray-400" />
+              <Github className="stroke-gray-600 dark:stroke-gray-400" />
             </a>
           </li>
           <li>
@@ -32,7 +32,7 @@ export default function Footer() {
               href="https://armandodev-portfolio.vercel.app/"
               target="_blank"
             >
-              <Portfolio className="stroke-black dark:stroke-gray-400" />
+              <Portfolio className="stroke-gray-600 dark:stroke-gray-400" />
             </a>
           </li>
         </ul>
