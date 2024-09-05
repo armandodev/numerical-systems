@@ -158,23 +158,15 @@ export default function Converter() {
 
         {!error && binary && octal && decimal && hexadecimal && (
           <>
-            <ul className="w-full grid gap-4 text-xl py-4">
-              <h3 className="text-4xl font-bold">Resultados:</h3>
-              <li>
-                <span>Binario: {binary}</span>
-              </li>
-              <li>
-                <span>Octal: {octal}</span>
-              </li>
-              <li>
-                <span>Decimal: {decimal}</span>
-              </li>
-              <li>
-                <span>Hexadecimal: {hexadecimal}</span>
-              </li>
-            </ul>
+            <article className="w-full max-w-screen-sm mx-auto break-all text-lg">
+              <h3 className="text-4xl font-bold mb-4">Resultados:</h3>
+              <p>Binario: {binary}</p>
+              <p>Octal: {octal}</p>
+              <p>Decimal: {decimal}</p>
+              <p>Hexadecimal: {hexadecimal}</p>
+            </article>
 
-            <article className="max-w-screen-sm mx-auto grid grid-cols-1 gap-4 place-items-center">
+            <article className="w-full max-w-screen-sm mx-auto grid grid-cols-1 gap-4 place-items-center">
               <h2 className="text-4xl font-bold">
                 Procedimientos: ¿Cómo llegar al resultado?
               </h2>
