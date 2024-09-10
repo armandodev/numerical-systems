@@ -1,182 +1,176 @@
 import { useState } from "react";
+import {
+  isValidBin,
+  isValidDec,
+  isValidOct,
+  isValidHex,
+  decimalToAny,
+  anyToDecimal,
+} from "@utils/converter";
+import Input from "@components/Input";
 
 export default function Converter() {
-  const [from, setFrom] = useState(0);
-  const [number, setNumber] = useState("");
   const [binary, setBinary] = useState("");
+  const [binaryError, setBinaryError] = useState("");
   const [octal, setOctal] = useState("");
+  const [octalError, setOctalError] = useState("");
   const [decimal, setDecimal] = useState("");
+  const [decimalError, setDecimalError] = useState("");
   const [hexadecimal, setHexadecimal] = useState("");
-  const [error, setError] = useState("");
+  const [hexadecimalError, setHexadecimalError] = useState("");
 
-  const numberPlaceholder = from
-    ? "Ingresa el número a convertir"
-    : "Primero selecciona el sistema";
+  const handleBinaryChange = (e) => {
+    const value = e.target.value;
 
-  function decimalToAny(number, base) {
-    if (number === 0) return "0";
-    let result = "",
-      remaining;
-    let num = Math.abs(number);
+    setBinaryError("");
 
-    while (num > 0) {
-      remaining = num % base;
-      if (remaining > 9 && base === 16) {
-        remaining = String.fromCharCode(remaining + 87);
-      }
-      result = remaining + result;
-      num = Math.floor(num / base);
+    if (value === "") {
+      setBinary("");
+      setOctal("");
+      setDecimal("");
+      setHexadecimal("");
+      return;
     }
 
-    return number < 0 ? "-" + result : result;
-  }
-
-  function anyToDecimal(number, base) {
-    let decimal = 0;
-    const digits = number.toLowerCase().split("").reverse();
-    for (let i = 0; i < digits.length; i++) {
-      const digit = digits[i];
-      if (digit >= "a" && digit <= "f") {
-        decimal += (digit.charCodeAt(0) - 87) * Math.pow(base, i);
-      } else {
-        decimal += parseInt(digit) * Math.pow(base, i);
-      }
-    }
-    return decimal;
-  }
-
-  const convert = (from, number) => {
-    let decimalNumber;
-    switch (parseInt(from)) {
-      case 1:
-        decimalNumber = anyToDecimal(number, 2);
-        break;
-      case 2:
-        decimalNumber = anyToDecimal(number, 8);
-        break;
-      case 3:
-        decimalNumber = parseInt(number);
-        break;
-      case 4:
-        decimalNumber = anyToDecimal(number, 16);
-        break;
-      default:
-        setError("Sistema de numeración no válido");
-        return;
+    if (!isValidBin(value)) {
+      setBinaryError("Solo 0, 1 y .");
+      return;
     }
 
-    setBinary(decimalToAny(decimalNumber, 2));
-    setOctal(decimalToAny(decimalNumber, 8));
-    setDecimal(decimalNumber.toString());
-    setHexadecimal(decimalToAny(decimalNumber, 16));
+    setOctalError("");
+    setDecimalError("");
+    setHexadecimalError("");
+    setBinary(value);
+    setOctal(decimalToAny(anyToDecimal(value, 2), 8));
+    setDecimal(anyToDecimal(value, 2));
+    setHexadecimal(decimalToAny(anyToDecimal(value, 2), 16));
   };
 
-  function handleSubmit(e) {
-    e.preventDefault();
+  const handleOctalChange = (e) => {
+    const value = e.target.value;
 
-    if (from === "4" && !/^[0-9a-fA-F]+$/.test(number)) {
-      setError("Ingresa un número hexadecimal válido");
-      return;
-    } else if (from === "3" && !/^-?\d+$/.test(number)) {
-      setError("Ingresa un número decimal válido");
-      return;
-    } else if (from === "2" && !/^[0-7]+$/.test(number)) {
-      setError("Ingresa un número octal válido");
-      return;
-    } else if (from === "1" && !/^[0-1]+$/.test(number)) {
-      setError("Ingresa un número binario válido");
-      return;
-    } else if (from === "0") {
-      setError("Selecciona un sistema válido");
+    setOctalError("");
+
+    if (value === "") {
+      setBinary("");
+      setOctal("");
+      setDecimal("");
+      setHexadecimal("");
       return;
     }
 
-    setError("");
-    convert(from, number);
-  }
+    if (!isValidOct(value)) {
+      setOctalError("Solo 0 a 7 y .");
+      return;
+    }
+
+    setBinaryError("");
+    setDecimalError("");
+    setHexadecimalError("");
+    setBinary(decimalToAny(anyToDecimal(value, 8), 2));
+    setOctal(value);
+    setDecimal(anyToDecimal(value, 8));
+    setHexadecimal(decimalToAny(anyToDecimal(value, 8), 16));
+  };
+
+  const handleDecimalChange = (e) => {
+    const value = e.target.value;
+
+    setDecimalError("");
+
+    if (value === "") {
+      setBinary("");
+      setOctal("");
+      setDecimal("");
+      setHexadecimal("");
+      return;
+    }
+
+    if (!isValidDec(value)) {
+      setDecimalError("Solo números y .");
+      return;
+    }
+
+    setBinaryError("");
+    setOctalError("");
+    setHexadecimalError("");
+    setDecimal(value);
+    setBinary(decimalToAny(value, 2));
+    setOctal(decimalToAny(value, 8));
+    setHexadecimal(decimalToAny(value, 16));
+  };
+
+  const handleHexChange = (e) => {
+    const value = e.target.value.toUpperCase();
+
+    setHexadecimalError("");
+
+    if (value === "") {
+      setBinary("");
+      setOctal("");
+      setDecimal("");
+      setHexadecimal("");
+      return;
+    }
+
+    if (!isValidHex(value)) {
+      setHexadecimalError("Solo números, A-F y .");
+      return;
+    }
+
+    setBinaryError("");
+    setOctalError("");
+    setDecimalError("");
+    setBinary(decimalToAny(anyToDecimal(value, 16), 2));
+    setOctal(decimalToAny(anyToDecimal(value, 16), 8));
+    setDecimal(anyToDecimal(value, 16));
+    setHexadecimal(value);
+  };
 
   return (
     <main>
-      <section className="max-w-screen-sm mx-auto min-h-[75vh] px-4 py-8 grid grid-cols-1 gap-4 place-items-center">
-        <article className="w-full grid gap-4">
-          <h1 className="text-4xl font-bold">
-            Convertidor de sistemas numéricos
-            <span className="sr-only">
-              {" "}
-              (Binario, Octal, Decimal, Hexadecimal)
-            </span>
-          </h1>
+      <section className="max-w-screen-sm mx-auto min-h-[75vh] px-4 py-8 flex flex-col items-center justify-center gap-4">
+        <h1 className="text-4xl font-bold">
+          Convertidor de sistemas numéricos
+        </h1>
 
-          <form className="w-full grid gap-4" onSubmit={handleSubmit}>
-            {error && (
-              <p className="bg-red-600 text-white text-sm font-bold py-2 px-4 rounded-lg">
-                {error}
-              </p>
-            )}
+        <form className="w-full grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <Input
+            id={"binary"}
+            label="Binario"
+            placeholder="111110100"
+            value={binary}
+            onChange={handleBinaryChange}
+            error={binaryError}
+          />
 
-            <label>
-              <span className="sr-only">Sistema de numeración</span>
-              <select
-                className="w-full border border-gray-200 dark:border-gray-700 py-2 px-4 focus:outline-none focus:border-blue-600 dark:focus:border-blue-400 rounded-lg bg-gray-50 dark:bg-gray-900"
-                id="from"
-                value={from}
-                onChange={(e) => setFrom(e.target.value)}
-              >
-                <option value="0" disabled>
-                  Selecciona el sistema
-                </option>
-                <option value="1">Binario</option>
-                <option value="2">Octal</option>
-                <option value="3">Decimal</option>
-                <option value="4">Hexadecimal</option>
-              </select>
-            </label>
+          <Input
+            id={"octal"}
+            label="Octal"
+            placeholder="764"
+            value={octal}
+            onChange={handleOctalChange}
+            error={octalError}
+          />
 
-            <label>
-              <span className="sr-only">Número a convertir</span>
-              <input
-                className={`w-full border border-gray-200 dark:border-gray-700 py-2 px-4 focus:outline-none focus:border-blue-600 dark:focus:border-blue-400 rounded-lg bg-gray-50 dark:bg-gray-900 ${
-                  !from && "cursor-not-allowed"
-                }`}
-                type="text"
-                id="number"
-                value={number}
-                placeholder={numberPlaceholder}
-                {...(!from && { disabled: true })}
-                onChange={(e) => setNumber(e.target.value)}
-              />
-            </label>
+          <Input
+            id={"decimal"}
+            label="Decimal"
+            placeholder="500"
+            value={decimal}
+            onChange={handleDecimalChange}
+            error={decimalError}
+          />
 
-            <button
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg"
-              type="submit"
-            >
-              Convertir
-            </button>
-          </form>
-        </article>
-
-        {!error && binary && octal && decimal && hexadecimal && (
-          <>
-            <article className="w-full max-w-screen-sm mx-auto break-all text-lg">
-              <h3 className="text-4xl font-bold mb-4">Resultados:</h3>
-              <p>Binario: {binary}</p>
-              <p>Octal: {octal}</p>
-              <p>Decimal: {decimal}</p>
-              <p>Hexadecimal: {hexadecimal}</p>
-            </article>
-
-            <article className="w-full max-w-screen-sm mx-auto grid grid-cols-1 gap-4 place-items-center">
-              <h2 className="text-4xl font-bold">
-                Procedimientos: ¿Cómo llegar al resultado?
-              </h2>
-
-              <p className="text-gray-600 dark:text-gray-400">
-                Próximamente...
-              </p>
-            </article>
-          </>
-        )}
+          <Input
+            id={"hexadecimal"}
+            label="Hexadecimal"
+            placeholder="1F4"
+            value={hexadecimal}
+            onChange={handleHexChange}
+            error={hexadecimalError}
+          />
+        </form>
       </section>
     </main>
   );
